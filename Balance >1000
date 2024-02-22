@@ -1,0 +1,33 @@
+// Определение структуры для хранения информации о балансе
+resource Balances {
+    balance: u64,
+}
+
+// Функция, возвращающая баланс в USDC для указанного адреса
+public fun get_balance(address: address): u64 {
+    // Получаем информацию о балансе для указанного адреса
+    let balance_resource: Balances;
+    move_to<&Balances>(address) as move_to_local<_, Balances>;
+    balance_resource.balance
+}
+
+// Функция, возвращающая список адресов с балансом USDC больше 1000$
+public fun addresses_with_balance_above_1000(): vector<address> {
+    let addresses: vector<address>;
+    let num_accounts: u64;
+    let index: u64;
+
+    // Получаем количество адресов в сети
+    num_accounts = DiemAccount::num_accounts();
+
+    // Проходим по всем адресам и добавляем те, у которых баланс больше 1000$, в список
+    for index in 0..num_accounts {
+        let address = DiemAccount::get_address_by_index(index);
+        if (get_balance(address) > 1000) {
+            vector::push_back(&mut addresses, address);
+        }
+    }
+
+    // Возвращаем список адресов с балансом больше 1000$
+    addresses
+}
