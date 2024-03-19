@@ -23,11 +23,7 @@ module MyToken {
         require(available > 0, "No tokens available for withdrawal yet");
         vestingSchedule[msg.sender] += available;
         balanceOf[msg.sender] += available;  // Function to withdraw available tokens
-    function withdrawTokens() public {
-        uint256 available = availableTokens(msg.sender);
-        require(available > 0, "No tokens available for withdrawal yet");
-        vestingSchedule[msg.sender] += available;
-        balanceOf[msg.sender] += available;
+  
         }
     }
 }
